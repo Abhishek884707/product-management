@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-management-app
+  namespace: default
+  labels:
+    app: product-management-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-management-app
+  template:
+    metadata:
+      labels:
+        app: product-management-app
+    spec:
+      containers:
+      - name: product-management-app
+        image: "devopshint/product-managementapp-1.0:latest"
+        ports:
+          - containerPort: 8002
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-management-app
+  namespace: default
+spec:
+  selector:
+    app: product-management-app
+  type: LoadBalancer
+  ports:
+  - name: http
+    targetPort: 8002
+    port: 8002
